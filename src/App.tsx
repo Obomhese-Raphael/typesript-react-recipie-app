@@ -3,7 +3,6 @@ import './App.css';
 import { IRecipie } from './IRecipie';
 import RecipieCard from './RecipieCard';
 import logo from "../src/assets/logo.png"
-import "./App.css"
 
 const App: React.FC = () => {
   const [recipesFound, setRecipesFound] = useState<IRecipie[]>([]);
@@ -21,6 +20,7 @@ const App: React.FC = () => {
   const search = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const form = event.target as HTMLFormElement;
+    setVisibleCount(8); // Reset the visible count to the first 8 results
     const input = form.querySelector('#searchText') as HTMLInputElement;
 
     if (input) {
@@ -58,20 +58,20 @@ const App: React.FC = () => {
           <img src={logo} className='logo' alt="Logo" />
           <h2>Dè Rèstaùrant🍔</h2>
           <form onSubmit={search} className="searchForm">
-            <input type="text" id="searchText" />
+            <input
+              type="text"
+              value={recipeSearch}
+              id="searchText"
+              onChange={(e) => setRecipeSearch(e.target.value)}
+            />
             <button>Search</button>
           </form>
         </div>
       </div>
 
-      <div style={{
-        display: "grid",
-        gridTemplateColumns: "repeat(4, 1fr)",
-        gap: "20px",
-        padding: "20px"
-      }} className='recipies-container'>
+      <div className='recipies-container container'>
         {recipesFound.length > 0 ? (
-          recipesFound.slice(0, visibleCount).map((recipe) => ( 
+          recipesFound.slice(0, visibleCount).map((recipe) => (
             <RecipieCard key={recipe.idMeal} recipie={recipe} />
           ))
         ) : (
